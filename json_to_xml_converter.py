@@ -52,4 +52,4 @@ class JsonToXml:
         print(json.dumps(self.json_data, indent=3))
 
     def __repr__(self):
-        return minidom.parseString(ET.tostring(self.root)).toprettyxml(intent="   ")
+        return minidom.parseString(ET.tostring(self.root)).toprettyxml(indent="   ")
