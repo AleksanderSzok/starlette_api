@@ -4,14 +4,32 @@ from json_to_xml_converter import JsonToXml
 
 app = Dash(__name__)
 
+colors = {"background": "#000000", "text": "#7FDBFF"}
+
 app.layout = html.Div(
     [
-        html.H2("Paste json!"),
-        html.Div([dcc.Textarea(id="my-input", value='{"a":1}')]),
+        html.H1(children="Paste json!", style={"color": colors["text"]}),
+        html.Div(
+            [
+                dcc.Textarea(
+                    id="my-input",
+                    value='{"a":1}',
+                    style={
+                        "color": colors["text"],
+                        "width": "180px",
+                        "font-size": "18px",
+                        "backgroundColor": colors["background"],
+                    },
+                )
+            ]
+        ),
+        html.Br(),
         html.Button(children="Change to xml!", n_clicks=0, id="btn-1"),
         html.Br(),
-        html.Div(id="my-output", style={"whiteSpace": "pre"}),
-    ]
+        html.Br(),
+        html.Div(id="my-output", style={"whiteSpace": "pre", "color": colors["text"]}),
+    ],
+    style={"backgroundColor": colors["background"]},
 )
 
 
