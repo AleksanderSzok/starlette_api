@@ -1,6 +1,5 @@
 from dash import Dash, dcc, html, Input, Output, State
-
-from json_to_xml_converter import JsonToXml
+import requests
 
 app = Dash(__name__)
 
@@ -39,9 +38,8 @@ app.layout = html.Div(
     State("my-input", "value"),
 )
 def update_output_div(n_clicks, input_value):
-    xml = JsonToXml(json_string=input_value)
-    xml.json_to_xml()
-    return html.Div(str(xml))
+    r = requests.post(url="http://127.0.0.1:8000/to_xml", data=input_value)
+    return html.Div(r.text)
 
 
 if __name__ == "__main__":
