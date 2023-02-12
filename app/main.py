@@ -4,7 +4,7 @@ from starlette.applications import Starlette
 from starlette.responses import JSONResponse, Response
 from starlette.routing import Route
 
-from json_to_xml_converter import JsonToXml
+from app.json_to_xml_converter import JsonToXml
 
 
 async def homepage(request):

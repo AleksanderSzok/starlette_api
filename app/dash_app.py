@@ -5,6 +5,8 @@ app = Dash(__name__)
 
 colors = {"background": "#000000", "text": "#7FDBFF"}
 
+base_url ="http://starlette_app:8000"
+
 app.layout = html.Div(
     [
         html.H1(children="Paste json!", style={"color": colors["text"]}),
@@ -38,9 +40,9 @@ app.layout = html.Div(
     State("my-input", "value"),
 )
 def update_output_div(n_clicks, input_value):
-    r = requests.post(url="http://127.0.0.1:8000/to_xml", data=input_value)
+    r = requests.post(url=f"{base_url}/to_xml", data=input_value)
     return html.Div(r.text)
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(host='0.0.0.0',debug=False)

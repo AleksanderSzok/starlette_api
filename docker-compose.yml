@@ -1,0 +1,22 @@
+version: "3.5"
+
+services:
+  starlette_app:
+    build:
+      context: .
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+
+  dash_app:
+    build:
+      context: .
+    command: python app/dash_app.py
+    ports:
+      - "8050:8050"
+    expose:
+      - "8050"
+    depends_on:
+      - starlette_app
