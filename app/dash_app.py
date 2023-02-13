@@ -5,7 +5,7 @@ app = Dash(__name__)
 
 colors = {"background": "#000000", "text": "#7FDBFF"}
 
-base_url ="http://starlette_app:8000"
+base_url = "http://starlette_app:8000"
 
 app.layout = html.Div(
     [
@@ -17,7 +17,8 @@ app.layout = html.Div(
                     value='{"a":1}',
                     style={
                         "color": colors["text"],
-                        "width": "180px",
+                        "width": "220px",
+                        "height": "300px",
                         "font-size": "18px",
                         "backgroundColor": colors["background"],
                     },
@@ -45,4 +46,4 @@ def update_output_div(n_clicks, input_value):
 
 
 if __name__ == "__main__":
-    app.run_server(host='0.0.0.0',debug=False)
+    app.run_server(host="0.0.0.0", debug=False)
