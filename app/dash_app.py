@@ -1,3 +1,6 @@
+import json
+import logging
+
 from dash import Dash, dcc, html, Input, Output, State
 import requests
 
@@ -13,35 +16,52 @@ app.layout = html.Div(
         html.Div(
             [
                 dcc.Textarea(
-                    id="my-input",
+                    id="json-input",
                     value='{"a":1}',
                     style={
                         "color": colors["text"],
                         "width": "220px",
-                        "height": "300px",
+                        "height": "220px",
                         "font-size": "18px",
                         "backgroundColor": colors["background"],
                     },
                 )
             ]
         ),
+        html.Div(
+            dcc.Input(
+                id="element-input",
+                placeholder="element name for json arrays",
+                type="text",
+                style={
+                    "color": colors["text"],
+                    "backgroundColor": colors["background"],
+                    "font-size": "16px",
+                    "width": "220px",
+                    "height": "40px",
+                },
+            )
+        ),
         html.Br(),
         html.Button(children="Change to xml!", n_clicks=0, id="btn-1"),
         html.Br(),
         html.Br(),
-        html.Div(id="my-output", style={"whiteSpace": "pre", "color": colors["text"]}),
+        html.Div(id="output", style={"whiteSpace": "pre", "color": colors["text"]}),
     ],
     style={"backgroundColor": colors["background"]},
 )
 
 
 @app.callback(
-    Output(component_id="my-output", component_property="children"),
+    Output(component_id="output", component_property="children"),
     Input(component_id="btn-1", component_property="n_clicks"),
-    State("my-input", "value"),
+    State(component_id="element-input", component_property="value"),
+    State(component_id="json-input", component_property="value"),
 )
-def update_output_div(n_clicks, input_value):
-    r = requests.post(url=f"{base_url}/to_xml", data=input_value)
+def update_output_div(n_clicks, element_name, json_data):
+    data = {"json": json_data, "element_name": element_name}
+    data = json.dumps(data)
+    r = requests.post(url=f"{base_url}/to_xml", data=data)
     return html.Div(r.text)
 
 

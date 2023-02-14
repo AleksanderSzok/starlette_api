@@ -6,9 +6,10 @@ from xml.dom import minidom
 
 
 class JsonToXml:
-    def __init__(self, json_string: str) -> None:
+    def __init__(self, json_string: str, element_name: Optional[str] = None) -> None:
         self.json_data = self.string_to_json(json_string)
         self.root = ET.Element("root")
+        self.element_name = "element" if not element_name else element_name
 
     @staticmethod
     def string_to_json(json_string: str) -> Optional[Union[dict, list]]:
@@ -38,7 +39,7 @@ class JsonToXml:
     ) -> None:
         if from_list:
             for element in tmp_json:
-                self.add_node(tmp_root, element, "element")
+                self.add_node(tmp_root, element, self.element_name)
         else:
             for key in tmp_json:
                 self.add_node(tmp_root, tmp_json[key], key)
