@@ -13,11 +13,11 @@ class JsonToXml:
 
     @staticmethod
     def string_to_json(json_string: str) -> Optional[Union[dict, list]]:
-        result = ""
         try:
             result = json.loads(json_string)
         except json.decoder.JSONDecodeError as e:
             logging.error(f"Wrong json format, exception: \n{e}")
+            result = {"error": "wrong json format", "exception_msg": str(e)}
         except TypeError:
             result = json_string
 

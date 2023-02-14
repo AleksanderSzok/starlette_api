@@ -1,5 +1,4 @@
 import json
-import logging
 
 from dash import Dash, dcc, html, Input, Output, State
 import requests
