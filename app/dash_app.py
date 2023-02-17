@@ -9,6 +9,8 @@ colors = {"background": "#000000", "text": "#7FDBFF"}
 
 base_url = "http://starlette_app:8000"
 
+# base_url = "http://127.0.0.1:8000"
+
 app.layout = html.Div(
     [
         html.H1(children="Paste json!", style={"color": colors["text"]}),
@@ -30,7 +32,7 @@ app.layout = html.Div(
         html.Div(
             dcc.Input(
                 id="element-input",
-                placeholder="element name for json arrays",
+                placeholder="elementtt name for json arrays",
                 type="text",
                 style={
                     "color": colors["text"],
@@ -42,6 +44,13 @@ app.layout = html.Div(
             )
         ),
         html.Br(),
+        dcc.Upload(html.A('Upload File'),                style={
+                    "color": colors["text"],
+                    "backgroundColor": colors["background"],
+                    "font-size": "16px",
+                    "width": "220px",
+                    "height": "40px",
+                },),
         html.Button(children="Change to xml!", n_clicks=0, id="btn-1"),
         html.Br(),
         html.Br(),
@@ -66,3 +75,4 @@ def update_output_div(n_clicks, element_name, json_data):
 
 if __name__ == "__main__":
     app.run_server(host="0.0.0.0", debug=False)
+    # app.run_server(debug=False)
