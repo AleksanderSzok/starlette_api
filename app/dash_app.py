@@ -1,3 +1,4 @@
+import base64
 import json
 
 from dash import Dash, dcc, html, Input, Output, State
@@ -32,7 +33,7 @@ app.layout = html.Div(
         html.Div(
             dcc.Input(
                 id="element-input",
-                placeholder="elementtt name for json arrays",
+                placeholder="element name for json arrays",
                 type="text",
                 style={
                     "color": colors["text"],
@@ -44,14 +45,8 @@ app.layout = html.Div(
             )
         ),
         html.Br(),
-        dcc.Upload(html.A('Upload File'),                style={
-                    "color": colors["text"],
-                    "backgroundColor": colors["background"],
-                    "font-size": "16px",
-                    "width": "220px",
-                    "height": "40px",
-                },),
-        html.Button(children="Change to xml!", n_clicks=0, id="btn-1"),
+        dcc.Upload(children=html.Button('Upload File'), id="upload-button"),
+        html.Button(children="Change to xml!", n_clicks=0, id="change-button"),
         html.Br(),
         html.Br(),
         html.Div(id="output", style={"whiteSpace": "pre", "color": colors["text"]}),
@@ -62,11 +57,18 @@ app.layout = html.Div(
 
 @app.callback(
     Output(component_id="output", component_property="children"),
-    Input(component_id="btn-1", component_property="n_clicks"),
+    Input(component_id="change-button", component_property="n_clicks"),
     State(component_id="element-input", component_property="value"),
     State(component_id="json-input", component_property="value"),
+    State(component_id="upload-button", component_property="contents"),
+    State(component_id="upload-button", component_property="filename"),
 )
-def update_output_div(n_clicks, element_name, json_data):
+def update_output_div(n_clicks, element_name, json_data, upload_data, filename):
+    if upload_data and 'json' in filename:
+        _, upload_data = upload_data.split(",")
+        decoded = base64.b64decode(upload_data)
+        json_data = json.loads(decoded)
+        upload_data = None
     data = {"json": json_data, "element_name": element_name}
     data = json.dumps(data)
     r = requests.post(url=f"{base_url}/to_xml", data=data)
