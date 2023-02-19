@@ -60,6 +60,7 @@ app.layout = html.Div(
 
 @app.callback(
     Output(component_id="output", component_property="children"),
+    Output(component_id="upload-component", component_property="contents"),
     Input(component_id="change-button", component_property="n_clicks"),
     State(component_id="element-input", component_property="value"),
     State(component_id="json-input", component_property="value"),
@@ -74,7 +75,7 @@ def update_output_div(n_clicks_change, element_name, json_data, upload_data, fil
     data = {"json": json_data, "element_name": element_name}
     data = json.dumps(data)
     r = requests.post(url=f"{base_url}/to_xml", data=data)
-    return html.Div(r.text)
+    return html.Div(r.text), None
 
 
 if __name__ == "__main__":
