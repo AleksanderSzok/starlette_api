@@ -46,7 +46,7 @@ app.layout = html.Div(
         ),
         html.Br(),
         dcc.Upload(
-            children=html.Button("Upload File", id="upload-button"),
+            children=html.Button("Upload File"),
             id="upload-component",
         ),
         html.Button(children="Change to xml!", n_clicks=0, id="change-button"),
@@ -63,16 +63,11 @@ app.layout = html.Div(
     Input(component_id="change-button", component_property="n_clicks"),
     State(component_id="element-input", component_property="value"),
     State(component_id="json-input", component_property="value"),
-    State(component_id="upload-component", component_property="contents"),
-    State(component_id="upload-component", component_property="filename"),
-    Input(component_id="upload-button", component_property="n_clicks"),
+    Input(component_id="upload-component", component_property="contents"),
+    Input(component_id="upload-component", component_property="filename"),
 )
-def update_output_div(
-    n_clicks_change, element_name, json_data, upload_data, filename, n_clicks_upload
-):
-    if not filename:
-        filename = []
-    if ctx.triggered_id == "upload-button" and "json" in filename:
+def update_output_div(n_clicks_change, element_name, json_data, upload_data, filename):
+    if ctx.triggered_id == "upload-component" and "json" in filename:
         _, upload_data = upload_data.split(",")
         decoded = base64.b64decode(upload_data)
         json_data = json.loads(decoded)
