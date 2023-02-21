@@ -1,5 +1,6 @@
 import base64
 import json
+import logging
 
 from dash import Dash, dcc, html, Input, Output, State, ctx
 import requests
@@ -45,6 +46,10 @@ app.layout = html.Div(
             )
         ),
         html.Br(),
+        html.Div([
+            html.Button("Download XML", id="btn-download-xml"),
+            dcc.Download(id="download-xml")
+        ]),
         dcc.Upload(
             children=html.Button("Upload File"),
             id="upload-component",
@@ -76,6 +81,21 @@ def update_output_div(n_clicks_change, element_name, json_data, upload_data, fil
     data = json.dumps(data)
     r = requests.post(url=f"{base_url}/to_xml", data=data)
     return html.Div(r.text), None
+
+
+@app.callback(
+    Output(component_id="download-xml", component_property="data"),
+    Input(component_id="btn-download-xml", component_property="n_clicks"),
+    State(component_id="element-input", component_property="value"),
+    State(component_id="json-input", component_property="value"),
+    prevent_initial_call=True,
+)
+def download_xml(n_click, element_name, json_data):
+    data = {"json": json_data, "element_name": element_name}
+    data = json.dumps(data)
+    r = requests.post(url=f"{base_url}/to_xml", data=data)
+
+    return dict(content=r.text, filename="output.xml")
 
 
 if __name__ == "__main__":
