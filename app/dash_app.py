@@ -90,7 +90,7 @@ def update_output_div(n_clicks_change, element_name, json_data, upload_data, fil
     data = {"json": json_data, "element_name": element_name}
     data = json.dumps(data)
     r = requests.post(url=f"{base_url}/to_xml", data=data)
-    app.storage = DataStorage(data=r.text)
+    app.storage.data = r.text
     return html.Div(r.text), None
 
 
