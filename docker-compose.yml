@@ -2,6 +2,7 @@ version: "3.5"
 
 services:
   starlette_app:
+    image: python_app
     build:
       context: .
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000
@@ -13,8 +14,7 @@ services:
       - "8000"
 
   dash_app:
-    build:
-      context: .
+    image: python_app
     command: python app/dash_app.py
     volumes:
       - ./app:/src/app
